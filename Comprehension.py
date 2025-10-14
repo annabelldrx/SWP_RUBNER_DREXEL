@@ -6,8 +6,6 @@ def SetComp():
     newName = {name for name in namen if name != "lukas"}
     return newName
 
-
-
 def DicComp():
     inventar = {"äpfel": "3kg", "pringles": 12, "RedBull": 72}
 
@@ -16,12 +14,6 @@ def DicComp():
         else "Wenig Pringles" if inventar["pringles"] > 0
         else "Keine Pringles"
     ]
-
-    print(ergebnis)
-
-
-
-
 
 if __name__ == "__main__":
     print("Quadratzahlen:", ListComp())
