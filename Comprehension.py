@@ -15,8 +15,13 @@ def DicComp():
         else "Keine Pringles"
     ]
 
+def DicAlphabet():
+    alphabet = {chr(97 + i): i + 1 for i in range(26)}
+    print(alphabet)
+
 if __name__ == "__main__":
     print("Quadratzahlen:", ListComp())
     print("alle namen außer lukas", SetComp())
     print("Inventar ", DicComp())
+    DicAlphabet()
 
