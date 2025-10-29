@@ -2,7 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/Pokersimulator.iml" filepath="$PROJECT_DIR$/.idea/Pokersimulator.iml" />
+=======
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/Comprehension.iml" filepath="$PROJECT_DIR$/.idea/Comprehension.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/Lottoziehung.iml" filepath="$PROJECT_DIR$/.idea/Lottoziehung.iml" />
+>>>>>>> e12652880fe96fcb696431781f6ee0b49a4b3e72
+>>>>>>> 47290fe9ccc0516a8fd5812996d31727ba221440
     </modules>
   </component>
 </project>
