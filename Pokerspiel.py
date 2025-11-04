@@ -15,8 +15,7 @@ def ziehe_karte(kartenNr):
 
         gezogene.append(gezogeneZahl)
 
-    print("Gezogene Zahlen:", gezogene)
-    print("Neue Kartenreihenfolge:", kartenNr)
+
     return gezogene
 
 
@@ -27,12 +26,12 @@ def karte_eig(gezogene):
     for i in gezogene:
         farbe = i%4
         farben.append(farbe)
-    print("Farben",farben)
+
 
     for i in gezogene:
         wert = i%13
         werte.append(wert)
-    print("Werte:", werte)
+
 
     return werte, farben
 
@@ -51,74 +50,119 @@ def pairs(werte):
     three_of_kind = [werte for werte, count in werte_counts.items() if count == 3]
     four_of_kind = [werte for werte, count in werte_counts.items() if count == 4]
     if len(four_of_kind) == 1:
-        print(f"Four of a kind mit Wert {pairs}")
+        return "four_of_a_kind"
+    elif len(three_of_kind) == 1 and len(pairs) == 1:
+        return "full_house"
     elif len(three_of_kind) == 1:
-        print(f"Three of a Kind mit Karte {pairs}")
-    elif len(pairs) == 1:
-        print(f"Pair mit Karte {pairs[0]}")
+        return "three_of_a_kind"
     elif len(pairs) >= 2:
-        print(f"Double Pair mit Karte {pairs}")
+        return "two_pair"
+    elif len(pairs) == 1:
+        return "pair"
     else:
-        print("Kein Pair")
+        return None
+
 
 # -----------------------------------------------------------------------------------------
 # Strasse
 
-def strasse(werte):
-    geordneteWerte = sorted(set(werte))  # doppelte Werte entfernen + sortieren
-    countStrasse = 1  # zählt aufeinanderfolgende Karten
 
+
+def strasse(werte):
+    geordneteWerte = sorted(set(werte))
+    countStrasse = 1
     for i in range(1, len(geordneteWerte)):
         if geordneteWerte[i] == geordneteWerte[i - 1] + 1:
             countStrasse += 1
-            if countStrasse >= len(geordneteWerte):
-                print("Wir haben eine Straße!")
+            if countStrasse >= 5:
                 return True
+        else:
+            countStrasse = 1
     return False
 
-#---------------------------------------------------------------------------------------------------------------
-
 def flush(farben):
-
-    flushY = 0
     farbe_counts = Counter(farben)
-    flush = [farbe for farbe, count in farbe_counts.items() if count == len(farben)]
+    for farbe, count in farbe_counts.items():
+        if count >= 5:
+            return farbe
+    return None
 
-    if len(flush) == 1:
-        print(f"Flush mit der Farbe {flush}" )
-        flushY = 1
-    return flushY
+#-----------------------------------------------------------------------------------------------------------
 
+def straightflush(werte, farben):
 
+    if strasse(werte) and flush(farben):
+        return True
+    else:
+        return False
 
-#------------------------------------------------------------------------------------------------------
+def fullhouse(werte):
+    counts = Counter(werte)
+    three_of_kind = [wert for wert, count in counts.items() if count == 3]
+    pairs = [wert for wert, count in counts.items() if count == 2]
 
-#def straightflush(farben, werte):
- #   if flushy == 1 and strasse(werte):
-  #      print("Straight Flush!")
-   #     return True
-    #else:
-     #   print("Kein Straight Flush.")
-      #  return False
+    if (len(three_of_kind) == 1) and (len(pairs) == 1):
+        return True
+    else:
+        return False
 
+def royalflush(werte, farben):
+    royal_values = {10, 11, 12, 13, 14}
+    if set(werte) == royal_values:
+        return True
+    else:
+        return False
 
+def statistik(durchlaeufe=100000):
 
+    stats = {
+        "pair": 0,
+        "two_pair": 0,
+        "three_of_a_kind": 0,
+        "straight": 0,
+        "flush": 0,
+        "full_house": 0,
+        "four_of_a_kind": 0,
+        "straight_flush": 0,
+        "royal_flush": 0
+    }
 
-
-
-
-
-
-
-
-if __name__ == "__main__":
-    for i in range(1):
-
-        kartenNr = list(range(1, 53))  # 1 bis 52
+    for _ in range(durchlaeufe):
+        kartenNr = list(range(1, 53))
         gezogene = ziehe_karte(kartenNr)
-
         werte, farben = karte_eig(gezogene)
 
-        pairs(werte)
-        strasse(werte)
-        flush(farben)
+        hand = pairs(werte)
+
+        # Paare, Drillinge usw.
+        if hand in stats:
+            stats[hand] += 1
+
+        # Straße
+        if strasse(werte):
+            stats["straight"] += 1
+
+        # Flush
+        if flush(farben):
+            stats["flush"] += 1
+
+        # Straight Flush
+        if straightflush(werte, farben):
+            stats["straight_flush"] += 1
+
+        # Royal Flush
+        if royalflush(werte, farben):
+            stats["royal_flush"] += 1
+
+
+    # Statistik anzeigen
+    print("\n=== Poker Statistik ===")
+    for hand, count in stats.items():
+        print(f"{hand:18}: {count} ({count / durchlaeufe * 100:.6f}%)")
+
+    return stats
+
+
+# ----------------------------------------------------------------------------------------------------
+if __name__ == "__main__":
+    statistik(100000)

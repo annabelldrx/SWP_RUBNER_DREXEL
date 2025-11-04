@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-<<<<<<< HEAD
-  <component name="VcsDirectoryMappings" defaultProject="true" />
-=======
-<<<<<<< HEAD
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/SWP_RUBNER_DREXEL" vcs="Git" />
   </component>
-=======
-  <component name="VcsDirectoryMappings" defaultProject="true" />
->>>>>>> e12652880fe96fcb696431781f6ee0b49a4b3e72
->>>>>>> 47290fe9ccc0516a8fd5812996d31727ba221440
 </project>
