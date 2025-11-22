@@ -90,11 +90,12 @@ def flush(farben):
 #-----------------------------------------------------------------------------------------------------------
 
 def straightflush(werte, farben):
-
-    if strasse(werte) and flush(farben):
-        return True
-    else:
-        return False
+    res = strasse(werte) and flush(farben)
+    return res
+   # if strasse(werte) and flush(farben):
+    #    return True
+    #else:
+   #     return False
 
 def fullhouse(werte):
     counts = Counter(werte)
