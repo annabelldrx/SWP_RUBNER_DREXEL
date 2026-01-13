@@ -1,0 +1,102 @@
+class Person:
+    def __init__(self, name, alter, geschlecht):
+        self.name = name
+        self.alter = alter
+        self.geschlecht = geschlecht
+
+
+class Mitarbeiter(Person):
+    anzahlMitarbeiterproA = 0
+
+    def __init__(self, name, alter, geschlecht, abteilung, leiter=False):
+        super().__init__(name, alter, geschlecht)
+        self.abteilung = abteilung
+        self.leiter = leiter
+        Mitarbeiter.anzahlMitarbeiterproA += 1
+
+
+class Abteilungsleiter(Mitarbeiter):
+    AbteilungsleiterA = 0
+
+    def __init__(self, name, alter, geschlecht, abteilung):
+        # Ruft Mitarbeiter-Init auf und setzt leiter=True
+        super().__init__(name, alter, geschlecht, abteilung, leiter=True)
+        # Erhöht den spezifischen Leiter-Zähler
+        Abteilungsleiter.AbteilungsleiterA += 1
+
+
+class Abteilung:
+    def __init__(self, name, abteilungsleiter_objekt):
+        self.name = name
+        self.abteilungsleiter = abteilungsleiter_objekt
+        self.mitarbeiter_liste = []
+
+    def mitarbeiter_hinzufuegen(self, mitarbeiter):
+        self.mitarbeiter_liste.append(mitarbeiter)
+
+
+# --- Hauptprogramm ---
+if __name__ == '__main__':
+    # 1. Objekte erstellen (Wichtig: Abteilungsleiter als eigene Klasse)
+    m1 = Abteilungsleiter("Lorena Prantner", 27, "w", "IT")
+    m2 = Mitarbeiter("Max Hofer", 34, "m", "IT")
+    m3 = Mitarbeiter("Anna Leitner", 29, "w", "IT")
+
+    m4 = Abteilungsleiter("Joana Bobchev", 31, "w", "Human Resourcing")
+    m5 = Mitarbeiter("Paul Gruber", 41, "m", "Human Resourcing")
+
+    m6 = Abteilungsleiter("Sophie Kern", 30, "w", "Marketing")
+    m7 = Mitarbeiter("David Moser", 26, "m", "Marketing")
+    m8 = Mitarbeiter("Lena Baumann", 35, "w", "Marketing")
+
+    m9 = Mitarbeiter("Thomas Berger", 45, "m", "Finanzen")
+    m10 = Mitarbeiter("Julia Steiner", 28, "w", "Finanzen")
+    m11 = Abteilungsleiter("Michael Weiss", 50, "m", "Finanzen")
+
+    # 2. Abteilungen initialisieren
+    abt_it = Abteilung("IT", m1)
+    abt_hr = Abteilung("Human Resourcing", m4)
+    abt_marketing = Abteilung("Marketing", m6)
+    abt_finanzen = Abteilung("Finanzen", m11)
+
+    # 3. Mitarbeiter den Abteilungen zuordnen
+    for m in [m1, m2, m3]: abt_it.mitarbeiter_hinzufuegen(m)
+    for m in [m4, m5]: abt_hr.mitarbeiter_hinzufuegen(m)
+    for m in [m6, m7, m8]: abt_marketing.mitarbeiter_hinzufuegen(m)
+    for m in [m9, m10, m11]: abt_finanzen.mitarbeiter_hinzufuegen(m)
+
+    alle_abteilungen = [abt_it, abt_hr, abt_marketing, abt_finanzen]
+
+    # --- AUSWERTUNG ---
+    print(f"--- Statistik ---")
+
+ 
+    print(f"Anzahl Abteilungen: {len(alle_abteilungen)}")
+    beste_abt = max(alle_abteilungen, key=lambda a: len(a.mitarbeiter_liste))
+    print(f"Größte Abteilung: {beste_abt.name} mit {len(beste_abt.mitarbeiter_liste)} Mitarbeitern")
+
+    # Frage 3: Prozentanteil Frauen/Männer?
+    frauen = 0
+    maenner = 0
+
+    # Wir sammeln alle Mitarbeiter aus allen Abteilungen
+    alle_personen = []
+    for abt in alle_abteilungen:
+        alle_personen.extend(abt.mitarbeiter_liste)
+
+    for p in alle_personen:
+        if p.geschlecht.lower() == "w":
+            frauen += 1
+        elif p.geschlecht.lower() == "m":
+            maenner += 1
+
+    gesamt = frauen + maenner
+    if gesamt > 0:
+        p_frauen = (frauen / gesamt) * 100
+        p_maenner = (maenner / gesamt) * 100
+        print(f"Geschlechter: Frauen {p_frauen:.1f}% | Männer {p_maenner:.1f}%")
+
+    # Kontroll-Zähler aus den Klassen
+    print(f"\nSystem-Check:")
+    print(f"Mitarbeiter gesamt (Counter): {Mitarbeiter.anzahlMitarbeiterproA}")
+    print(f"Abteilungsleiter gesamt (Counter): {Abteilungsleiter.AbteilungsleiterA}")
