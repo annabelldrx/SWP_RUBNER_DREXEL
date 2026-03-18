@@ -1,0 +1,67 @@
+import random
+
+#verkettete Liste Platz für 2 einmal den WErt und einmal .next die referenz für den nächsten ort
+
+class Knoten:
+    def __init__(self,data):
+        self.data = data
+        self.next = None
+
+class VerketteteList:
+    def __init__(self):
+        self.head = None
+
+    def einfügen(self, data):
+        neu_knoten = Knoten(data)
+        neu_knoten.next = self.head
+        self.head = neu_knoten
+
+    def am_ende_hinzufuegen(self, data):
+        neu_knoten = Knoten(data)
+        if not self.head:
+            self.head = neu_knoten
+            return
+
+        aktuell = self.head
+        while aktuell.next: #so lang es keinen nachfolger gibt also next nicht none ist
+            aktuell = aktuell.next
+        aktuell.next = neu_knoten #wenn der zeiger auf none zeitgt macht er neuen Knoten
+
+    def ausgebenWerte(self):
+        current = self.head
+        while current:
+            print(f"{current.data} -> ", end="")
+            current = current.next
+        print("None")
+
+    def ausgebenLänge(self):
+        wert = self.head
+        länge = 0
+        while wert:
+            länge += 1
+            wert = wert.next
+        print(f"Länge der Liste {länge}", end="")
+
+    def __iter__(self):
+        self._iter_current = self.head
+        return self
+
+
+    def __next__(self):
+        if self._iter_current is None:
+            raise StopIteration
+        data = self._iter_current.data
+        self._iter_current = self._iter_current.next
+        return data
+
+if __name__ == "__main__":
+    verkettete = VerketteteList()
+    for _ in range(5):
+        zahl = random.randint(1, 100)
+        print(f"Füge hinzu: {zahl}")
+        verkettete.am_ende_hinzufuegen(zahl)
+
+    verkettete.ausgebenWerte()
+    verkettete.ausgebenLänge()
+    for wert in verkettete:
+        print(f"Wert: {wert}")
